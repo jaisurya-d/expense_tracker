@@ -10,4 +10,8 @@ urlpatterns = [
     path('expense_register/',expense_register,name='expense_register'),
     path('delete_expense/',delete_expense,name='delete_expense'),
 
+    path("register/", register, name="register")
+        
+
+
 ]

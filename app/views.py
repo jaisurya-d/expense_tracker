@@ -2,6 +2,9 @@ from django.http import JsonResponse,HttpResponse,HttpResponseNotFound
 from django.shortcuts import render,redirect
 from .models import Expense
 
+from django.contrib.auth.models import User 
+
+from django.contrib import messages
 # Create your views here.
 """
 | Response Type                 | Status Code | Use Case           |
@@ -81,4 +84,30 @@ def delete_expense(request):
             return JsonResponse({"Status":"Success","Message":"Expense Deleted Successfully"})
         else:
             return JsonResponse({"Status":"Failed","Message":"Expense Not Deleted"})
+
+def register(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password1 = request.POST.get("password1")
+        password2 = request.POST.get("password2")
+
+        if password1 != password2:
+            messages.error(request, "Passwords do not match")
+            return redirect("register")
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists")
+            return redirect("register")
+
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password1
+        )
+        user.save()
+        messages.success(request, "Account created successfully. Please login.")
+        return HttpResponse("User Created Successfully")
+
+    return render(request, "auth/registration.html")
     

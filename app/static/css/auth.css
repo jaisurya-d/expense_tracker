@@ -1,0 +1,52 @@
+/* Full screen background */
+body {
+    height: 100vh;
+    background: linear-gradient(135deg, #1d2671, #c33764);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Wrapper */
+.login-wrapper {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+/* Glassmorphism card */
+.login-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 12px;
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Animation */
+.animate-login {
+    animation: slideFade 1s ease forwards;
+}
+
+@keyframes slideFade {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Inputs */
+.form-control {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Button */
+.btn-primary {
+    border-radius: 25px;
+}
