@@ -24,7 +24,6 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link" href="{% url 'add_category' %}">Add Catogory</a></li>
-
                 <li class="nav-item"><a class="nav-link" href="{% url 'expense_register' %}">Register Expense</a></li>
                 {% if user.is_authenticated %}
                 <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
@@ -40,76 +39,49 @@
 <section class="hero justify-content-start pt-5">
     <div class="container">
 
-        <h2 class="mb-4 text-center">Register Your Expense</h2>
+        <h2 class="mb-4 text-center">Create Category</h2>
     
         <!-- Manual Expense Form -->
         <div class="card mb-5 p-4 shadow-sm">
             <form method="POST" class="row g-3">
-                <input type="text" name="expense_id" id="expense_id" hidden>
+                <input type="text" name="category_id" id="category_id" hidden>
                 {% csrf_token %}
                 <div class="col-md-3">
-                    <label for="date" class="form-label">Date</label>
-                    <input type="date" name="date" class="form-control" id="date" required>
-                </div>
-                <div class="col-md-3">
                     <label for="category" class="form-label">Category</label>
-                    <!-- <input type="text" name="category" class="form-control" id="category" placeholder="Food, Travel..." required> --> 
-                    <select name="category" id="category" class="form-control form-select">
-                        <option value="" selected disabled>Select Expense Category</option>
-                        {% for category in categories %}
-                            <option value="{{category.id}}">{{category.name}}</option>
-                        {% endfor %}
-                    </select>
+                    <input type="text" name="category" class="form-control" id="category" placeholder="Food, Travel..." required>
                 </div>
-                <div class="col-md-3">
-                    <label for="amount" class="form-label">Amount</label>
-                    <input type="number" name="amount" class="form-control" id="amount" placeholder="0.00" step="0.01" required>
-                </div>
-                <div class="col-3">
-                    <label for="comment" class="form-label">Comment</label>
-                    <textarea name="comment" class="form-control" id="comment" rows="2" placeholder="Optional"></textarea>
-                </div>
-                <div class="col-12 text-center" id="submit_btn_div">
-                    <button type="submit" class="btn btn-primary">Add Expense</button>
+                <div class="col-3 text-center" id="submit_btn_div">
+                    <button type="submit" class="btn btn-primary mt-4">Add Category</button>
                 </div>
             </form>
         </div>
     
         <!-- Expenses Table -->
-        <h3 class="mb-3 text-center">All Registered Expenses</h3>
+        <h3 class="mb-3 text-center">All Created Categories</h3>
         <div class="table-responsive" style="max-height: 60%;">
             <table class="table table-bordered table-striped">
                 <thead class="table-primary">
                     <tr>
-                        <th>Date</th>
+                        <th>S.no</th>
                         <th>Category</th>
-                        <th>Amount</th>
-                        <th>Comment</th>
-                        <th>Created Date</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for expense in expenses %}
+                    {% for category in categories %}
                         <tr>
-                            <td>{{ expense.date }}</td>
-                            <td>{{ expense.category }}</td>
-                            <td>₹{{ expense.amount }}</td>
-                            <td>{{ expense.comment }}</td>
-                            <td>{{ expense.created_at }}</td>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{ category.name }}</td>
                             <td class="text-center">
                                 <!-- Edit Button triggers modal -->
                                 <button type="button" class="btn btn-sm btn-warning"
-                                data-id="{{ expense.id }}"
-                                data-date="{{ expense.date }}"
-                                data-category="{{ expense.category.id }}"
-                                data-amount="{{ expense.amount }}"
-                                data-comment="{{ expense.comment|escapejs }}"
-                                onclick="editExpenseFromButton(this)"
+                                data-id="{{ category.id }}"
+                                data-name="{{ category.name }}"
+                                onclick="editcategoryFromButton(this)"
                                 >✍️</button>
                     
                                 <!-- Delete Button triggers modal -->
-                                <button type="button" class="btn btn-sm btn-danger"   onclick="deleteExpense({{expense.id}})">🗑️</button>
+                                <button type="button" class="btn btn-sm btn-danger"   onclick="deleteCategory({{category.id}})">🗑️</button>
                             </td>
                         </tr>
                     {% empty %}
@@ -125,11 +97,11 @@
 </section>
 <script src="{% static './js/jquery.js' %}"></script>
 <script>
-    function deleteExpense(id) {
+    function deleteCategory(id) {
     if (!confirm("Are you sure to delete this expense?")) return;
 
     $.ajax({
-        url: "/delete_expense/",
+        url: "/delete_category/",
         type: "POST",
         data: { id: id ,
             csrfmiddlewaretoken: "{{ csrf_token }}"},
@@ -139,24 +111,18 @@
         }
     });
 }
-function editExpenseFromButton(btn) {
-  editExpense(
+function editcategoryFromButton(btn) {
+  editCategory(
     btn.dataset.id,
-    btn.dataset.date,
-    btn.dataset.category,
-    btn.dataset.amount,
-    btn.dataset.comment
+    btn.dataset.name
   );
 }
 
-function editExpense(id,date,category,amount,comment) {
+function editCategory(id,name) {
     $('#submit_btn_div').empty()
-    $("#submit_btn_div").append('<button class="btn btn-primary" >Edit Expense</button> <button onclick="windows.location.reload()" class="btn btn-primary">Cancel</button>')
-    $("#expense_id").val(id);
-    $("#date").val(date);
-    $("#category").val(category);
-    $("#amount").val(amount);
-    $("#comment").val(comment);
+    $("#submit_btn_div").append('<button class="btn btn-primary" >Edit Category</button> <button onclick="windows.location.reload()" class="btn btn-primary">Cancel</button>')
+    $("#category_id").val(id);
+    $("#category").val(name);
 
 }
 

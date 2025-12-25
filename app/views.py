@@ -1,6 +1,6 @@
 from django.http import JsonResponse,HttpResponse,HttpResponseNotFound
 from django.shortcuts import render,redirect
-from .models import Expense
+from .models import Expense,Categories  
 
 from django.contrib.auth.models import User 
 
@@ -40,7 +40,7 @@ def index(request):
     return render(request,'index.html')
 
 def home_page(request):
-    return render(request,'home_page.html',{'user':"Jaisurya"})
+    return render(request,'home_page.html',{'user':"Buddy"})
 
 @login_required(login_url='/home_page/')
 def expense_register(request):
@@ -53,13 +53,14 @@ def expense_register(request):
         comment = request.POST.get('comment')
 
         print("c_date --",c_date,"category --",category,'amount --',amount,'comment --',comment,"-----------------------------------",expense_id)
-        if expense_id is None:
+        if expense_id is None or expense_id == "":
         # Save to database
             Expense.objects.create(
                 date=c_date,
-                category=category,
+                category_id=category,
                 amount=amount,
                 comment=comment,
+                created_by_id = request.user.id
             )
             return redirect('expense_register')  # reload page after saving
         else:
@@ -73,11 +74,12 @@ def expense_register(request):
 
         # Fetch all expenses
     # if request.method == "GET":
-    expenses = Expense.objects.all().order_by('-date')
+    categories = Categories.objects.filter(created_by = request.user.id).all().order_by('-id')
+    expenses = Expense.objects.filter(created_by = request.user.id).all().order_by('-date')
     for expense in expenses:
         expense.date = expense.date.isoformat()     
 
-    context = {'expenses': expenses}
+    context = {'expenses': expenses,'categories': categories}
 
     return render(request,'expense_register.html',context)
 
@@ -114,7 +116,7 @@ def register(request):
         user.save()
         messages.success(request, "Account created successfully. Please login.")
         # return HttpResponse("User Created Successfully")
-        return render('login')
+        return redirect('login')
 
     return render(request, "auth/registration.html")
     
@@ -145,3 +147,43 @@ def login_page(request):
 def logout(request):
     auth_logout(request)
     return redirect("/home_page/")
+
+
+@login_required(login_url='/home_page/')
+def add_category(request):
+    if request.method == "POST":
+        # Get data manually from POST
+        category_id = request.POST.get('category_id',None)
+        category = request.POST.get('category')
+
+        if category_id is None or category_id == "":
+        # Save to database
+            Categories.objects.create(
+                name=category,
+                created_by_id = request.user.id
+            )
+            return redirect('add_category')  # reload page after saving
+        else:
+            Categories.objects.filter(id = category_id).update( 
+                name=category)
+            return redirect('add_category')  # reload page after saving
+
+
+
+        # Fetch all expenses
+    # if request.method == "GET":
+    categories = Categories.objects.filter(created_by = request.user.id).all().order_by('-id')
+
+    context = {'categories': categories}
+
+    return render(request,'add_category.html',context)
+
+@login_required(login_url='/home_page/')
+def delete_category(request):
+    if request.method == "POST":
+        category_id = request.POST.get('id')
+        check = Categories.objects.filter(id = category_id).delete()
+        if check:
+            return JsonResponse({"Status":"Success","Message":"Category Deleted Successfully"})
+        else:
+            return JsonResponse({"Status":"Failed","Message":"Category Not Deleted"})

@@ -9,6 +9,8 @@ urlpatterns = [
     path('home_page/',home_page,name='home_page'),
     path('expense_register/',expense_register,name='expense_register'),
     path('delete_expense/',delete_expense,name='delete_expense'),
+    path('add_category/',add_category,name='add_category'),
+    path('delete_category/',delete_category,name='delete_category'),
 
     path("register/", register, name="register"),
     path("login/", login_page, name="login"),
