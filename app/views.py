@@ -48,7 +48,7 @@ def expense_register(request):
         comment = request.POST.get('comment')
 
         print("c_date --",c_date,"category --",category,'amount --',amount,'comment --',comment,"-----------------------------------",expense_id)
-        if expense_id is None:
+        if expense_id is None or expense_id == "":
         # Save to database
             Expense.objects.create(
                 date=c_date,
