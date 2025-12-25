@@ -20,7 +20,8 @@ body {
 
 /* Hero Section */
 .hero {
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
     background: linear-gradient(135deg, #0d6efd, #6610f2);
     display: flex;
     flex-direction: column;

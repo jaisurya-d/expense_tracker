@@ -240,7 +240,8 @@ def report(request):
     context['month_totals'] = month_totals
     
     print(context)
-    return JsonResponse(context)
+    # return JsonResponse(context)
+    return render(request, 'expense_report.html', context)
 
 
 
