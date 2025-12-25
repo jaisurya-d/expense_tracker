@@ -61,6 +61,36 @@
             </form>
         </div>
     
+        <!-- Expenses Table -->
+        <h3 class="mb-3 text-center">All Registered Expenses</h3>
+        <div class="table-responsive" style="max-height: 60%;">
+            <table class="table table-bordered table-striped">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Date</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Comment</th>
+                        <th>Created Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for expense in expenses %}
+                        <tr>
+                            <td>{{ expense.date }}</td>
+                            <td>{{ expense.category }}</td>
+                            <td>${{ expense.amount }}</td>
+                            <td>{{ expense.comment }}</td>
+                            <td>{{ expense.created_at }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">No expenses yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
     
 </section>

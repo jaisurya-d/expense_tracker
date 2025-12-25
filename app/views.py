@@ -45,4 +45,18 @@ def expense_register(request):
 
         print("c_date --",c_date,"category --",category,'amount --',amount,'comment --',comment)
 
-    return render(request,'expense_register.html')
+        # Save to database
+        Expense.objects.create(
+            date=c_date,
+            category=category,
+            amount=amount,
+            comment=comment,
+        )
+        return redirect('expense_register')  # reload page after saving
+
+        # Fetch all expenses
+    # if request.method == "GET":
+    expenses = Expense.objects.all().order_by('-date')
+    context = {'expenses': expenses}
+
+    return render(request,'expense_register.html',context)
