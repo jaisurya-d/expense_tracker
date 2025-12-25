@@ -114,7 +114,7 @@ def register(request):
         user.save()
         messages.success(request, "Account created successfully. Please login.")
         # return HttpResponse("User Created Successfully")
-        return render('login')
+        return redirect('login')
 
     return render(request, "auth/registration.html")
     
