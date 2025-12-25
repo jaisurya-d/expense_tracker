@@ -38,25 +38,47 @@ def home_page(request):
 def expense_register(request):
     if request.method == "POST":
         # Get data manually from POST
+        expense_id = request.POST.get('expense_id',None)
         c_date = request.POST.get('date')
         category = request.POST.get('category')
         amount = request.POST.get('amount')
         comment = request.POST.get('comment')
 
-        print("c_date --",c_date,"category --",category,'amount --',amount,'comment --',comment)
-
+        print("c_date --",c_date,"category --",category,'amount --',amount,'comment --',comment,"-----------------------------------",expense_id)
+        if expense_id is None:
         # Save to database
-        Expense.objects.create(
-            date=c_date,
-            category=category,
-            amount=amount,
-            comment=comment,
-        )
-        return redirect('expense_register')  # reload page after saving
+            Expense.objects.create(
+                date=c_date,
+                category=category,
+                amount=amount,
+                comment=comment,
+            )
+            return redirect('expense_register')  # reload page after saving
+        else:
+            Expense.objects.filter(id = expense_id).update( date=c_date,
+                category=category,
+                amount=amount,
+                comment=comment,)
+            return redirect('expense_register')  # reload page after saving
+
+
 
         # Fetch all expenses
     # if request.method == "GET":
     expenses = Expense.objects.all().order_by('-date')
+    for expense in expenses:
+        expense.date = expense.date.isoformat()     
+
     context = {'expenses': expenses}
 
     return render(request,'expense_register.html',context)
+
+def delete_expense(request):
+    if request.method == "POST":
+        expense_id = request.POST.get('id')
+        check = Expense.objects.filter(id = expense_id).delete()
+        if check:
+            return JsonResponse({"Status":"Success","Message":"Expense Deleted Successfully"})
+        else:
+            return JsonResponse({"Status":"Failed","Message":"Expense Not Deleted"})
+    

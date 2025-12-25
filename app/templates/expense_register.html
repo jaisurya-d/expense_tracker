@@ -38,6 +38,7 @@
         <!-- Manual Expense Form -->
         <div class="card mb-5 p-4 shadow-sm">
             <form method="POST" class="row g-3">
+                <input type="text" name="expense_id" id="expense_id" hidden>
                 {% csrf_token %}
                 <div class="col-md-3">
                     <label for="date" class="form-label">Date</label>
@@ -55,7 +56,7 @@
                     <label for="comment" class="form-label">Comment</label>
                     <textarea name="comment" class="form-control" id="comment" rows="2" placeholder="Optional"></textarea>
                 </div>
-                <div class="col-12 text-center">
+                <div class="col-12 text-center" id="submit_btn_div">
                     <button type="submit" class="btn btn-primary">Add Expense</button>
                 </div>
             </form>
@@ -72,6 +73,7 @@
                         <th>Amount</th>
                         <th>Comment</th>
                         <th>Created Date</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,13 +81,27 @@
                         <tr>
                             <td>{{ expense.date }}</td>
                             <td>{{ expense.category }}</td>
-                            <td>${{ expense.amount }}</td>
+                            <td>₹{{ expense.amount }}</td>
                             <td>{{ expense.comment }}</td>
                             <td>{{ expense.created_at }}</td>
+                            <td class="text-center">
+                                <!-- Edit Button triggers modal -->
+                                <button type="button" class="btn btn-sm btn-warning"
+                                data-id="{{ expense.id }}"
+                                data-date="{{ expense.date }}"
+                                data-category="{{ expense.category }}"
+                                data-amount="{{ expense.amount }}"
+                                data-comment="{{ expense.comment|escapejs }}"
+                                onclick="editExpenseFromButton(this)"
+                                >✍️</button>
+                    
+                                <!-- Delete Button triggers modal -->
+                                <button type="button" class="btn btn-sm btn-danger"   onclick="deleteExpense({{expense.id}})">🗑️</button>
+                            </td>
                         </tr>
                     {% empty %}
                         <tr>
-                            <td colspan="4" class="text-center">No expenses yet.</td>
+                            <td colspan="6" class="text-center">No expenses yet.</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -94,5 +110,43 @@
     </div>
     
 </section>
+<script src="{% static './js/jquery.js' %}"></script>
+<script>
+    function deleteExpense(id) {
+    if (!confirm("Are you sure to delete this expense?")) return;
+
+    $.ajax({
+        url: "/delete_expense/",
+        type: "POST",
+        data: { id: id ,
+            csrfmiddlewaretoken: "{{ csrf_token }}"},
+        success: function(response) {
+            alert(response.Message);
+            location.reload()
+        }
+    });
+}
+function editExpenseFromButton(btn) {
+  editExpense(
+    btn.dataset.id,
+    btn.dataset.date,
+    btn.dataset.category,
+    btn.dataset.amount,
+    btn.dataset.comment
+  );
+}
+
+function editExpense(id,date,category,amount,comment) {
+    $('#submit_btn_div').empty()
+    $("#submit_btn_div").append('<button class="btn btn-primary" >Edit Expense</button> <button onclick="windows.location.reload()" class="btn btn-primary">Cancel</button>')
+    $("#expense_id").val(id);
+    $("#date").val(date);
+    $("#category").val(category);
+    $("#amount").val(amount);
+    $("#comment").val(comment);
+
+}
+
+</script>
 </body>
 </html>
