@@ -12,6 +12,8 @@ urlpatterns = [
     path('add_category/',add_category,name='add_category'),
     path('delete_category/',delete_category,name='delete_category'),
 
+    path('report/',report,name='report'),
+
     path("register/", register, name="register"),
     path("login/", login_page, name="login"),
     path("logout/", logout, name="logout"),

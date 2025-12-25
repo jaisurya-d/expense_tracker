@@ -9,6 +9,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout as auth_logout
 
 from django.contrib.auth.decorators import login_required   
+
+from datetime import date
 # Create your views here.
 """
 | Response Type                 | Status Code | Use Case           |
@@ -187,3 +189,58 @@ def delete_category(request):
             return JsonResponse({"Status":"Success","Message":"Category Deleted Successfully"})
         else:
             return JsonResponse({"Status":"Failed","Message":"Category Not Deleted"})
+
+@login_required(login_url='/home_page/')
+def report(request):
+    today = date.today()
+    
+    # Get all expenses for this month
+    expenses_this_month = Expense.objects.filter(
+        created_by=request.user,
+        date__year=today.year,
+        date__month=today.month
+    )
+    
+    # 1️⃣ Total expense for this month
+    this_month_total = sum(exp.amount for exp in expenses_this_month)
+    
+    # 2️⃣ Category-wise total for this month
+    category_totals = {}
+    for exp in expenses_this_month:
+        cat = exp.category.name
+        if cat not in category_totals:
+            category_totals[cat] = 0
+        category_totals[cat] += float(exp.amount)
+    
+    # Pass to template
+    context = {
+        "this_month_total": this_month_total,
+        "category_totals": category_totals
+    }
+
+    
+    current_year = today.year
+
+    month_totals = {}
+    for month_num in range(1, 13):
+        month_name = date(current_year, month_num, 1).strftime("%b")
+        month_totals[month_name] = 0
+
+    # Get all expenses for this year
+    expenses = Expense.objects.filter(
+        created_by=request.user,
+        date__year=current_year
+    )
+
+    # Sum expenses per month
+    for exp in expenses:
+        month_name = exp.date.strftime("%b")
+        month_totals[month_name] += float(exp.amount)
+
+    context['month_totals'] = month_totals
+    
+    print(context)
+    return JsonResponse(context)
+
+
+
