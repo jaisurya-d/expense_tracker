@@ -15,15 +15,21 @@ from django.shortcuts import render
 | HttpResponseServerError       | 500         | Server error       | Server error occurred
 """
 
-def httpresponse(request):
-    print('hello all welcome to our course')
-    return HttpResponse('<h1>hello all</h1>')
+# def httpresponse(request):
+#     print('Hello all welcome to our course')
+#     return HttpResponse('<h1>hello all</h1>')
 
-def jsonresponse(request):
-        return JsonResponse({
-        "status": "Success",
-        "message": "hello all welcome to our course"
-    })
+# def jsonresponse(request):
+#         return JsonResponse({
+#         "status": "Success",
+#         "message": "hello all welcome to our course"
+#     })
 
-def not_found_view(request):
-    return HttpResponseNotFound("Page not found")
+# def not_found_view(request):
+#     return HttpResponseNotFound("Page not found")
+
+def index(request):
+    return render(request,'index.html')
+
+def home_page(request):
+    return render(request,'home_page.html')
