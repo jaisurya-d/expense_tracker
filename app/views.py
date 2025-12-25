@@ -5,6 +5,10 @@ from .models import Expense
 from django.contrib.auth.models import User 
 
 from django.contrib import messages
+
+from django.contrib.auth import authenticate, login, logout as auth_logout
+
+from django.contrib.auth.decorators import login_required   
 # Create your views here.
 """
 | Response Type                 | Status Code | Use Case           |
@@ -38,6 +42,7 @@ def index(request):
 def home_page(request):
     return render(request,'home_page.html',{'user':"Jaisurya"})
 
+@login_required(login_url='/home_page/')
 def expense_register(request):
     if request.method == "POST":
         # Get data manually from POST
@@ -76,6 +81,7 @@ def expense_register(request):
 
     return render(request,'expense_register.html',context)
 
+@login_required(login_url='/home_page/')
 def delete_expense(request):
     if request.method == "POST":
         expense_id = request.POST.get('id')
@@ -107,7 +113,35 @@ def register(request):
         )
         user.save()
         messages.success(request, "Account created successfully. Please login.")
-        return HttpResponse("User Created Successfully")
+        # return HttpResponse("User Created Successfully")
+        return render('login')
 
     return render(request, "auth/registration.html")
     
+def login_page(request):
+    # ✅ If already logged in → go to index
+    if request.user.is_authenticated:
+        return redirect("expense_register")
+
+    # # ✅ AJAX POST (login)
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is None:
+            messages.error(request,'invalid credentials')
+            return redirect('login')
+
+        login(request, user)
+
+        return redirect('expense_register')
+
+    # ✅ Normal GET → show login page
+    return render(request, "auth/login.html")
+
+@login_required(login_url='/home_page/')
+def logout(request):
+    auth_logout(request)
+    return redirect("/home_page/")
