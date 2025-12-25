@@ -1,5 +1,6 @@
 from django.http import JsonResponse,HttpResponse,HttpResponseNotFound
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from .models import Expense
 
 # Create your views here.
 """
@@ -32,4 +33,16 @@ def index(request):
     return render(request,'index.html')
 
 def home_page(request):
-    return render(request,'home_page.html')
+    return render(request,'home_page.html',{'user':"Jaisurya"})
+
+def expense_register(request):
+    if request.method == "POST":
+        # Get data manually from POST
+        c_date = request.POST.get('date')
+        category = request.POST.get('category')
+        amount = request.POST.get('amount')
+        comment = request.POST.get('comment')
+
+        print("c_date --",c_date,"category --",category,'amount --',amount,'comment --',comment)
+
+    return render(request,'expense_register.html')
