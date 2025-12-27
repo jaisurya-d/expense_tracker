@@ -42,7 +42,7 @@ def index(request):
     return render(request,'index.html')
 
 def home_page(request):
-    return render(request,'home_page.html',{'user':"Buddy"})
+    return render(request,'home_page.html',{'welcome_user':"Buddy"})
 
 @login_required(login_url='/home_page/')
 def expense_register(request):
