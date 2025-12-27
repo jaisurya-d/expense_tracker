@@ -1,59 +1,136 @@
-### Django Day 2 – Understanding HTTP Responses & URLs
+# 📘 Django Day 2 -- Understanding HTTP Responses & URL Routing
 
-This project demonstrates basic Django response types and URL routing.
-It is designed for beginners to understand how Django handles different kinds of HTTP responses.
+## 📌 Lesson Overview
 
-### Topics Covered
+Day 2 focuses on how Django handles **HTTP requests and responses** and
+how **URLs are mapped to views**. This lesson helps beginners understand
+how Django sends data back to the browser or client.
 
-- Django URL configuration
-- HttpResponse
-- JsonResponse
-- HttpResponseNotFound (404)
-- Basic project and app URL integration
+------------------------------------------------------------------------
 
-### Response Types Explained
+## 🎯 Topics Covered
 
-| Response Type                 | Status Code | Use Case             |
-| ----------------------------- | ----------- | -------------------- |
-| HttpResponse                  | 200         | Normal HTML response |
-| JsonResponse                  | 200         | API / JSON response  |
-| HttpResponseRedirect          | 302         | Temporary redirect   |
-| HttpResponsePermanentRedirect | 301         | Permanent redirect   |
-| HttpResponseNotFound          | 404         | Page not found       |
-| HttpResponseForbidden         | 403         | Access denied        |
-| HttpResponseBadRequest        | 400         | Invalid request      |
-| HttpResponseServerError       | 500         | Server error         |
+-   Django Views
+-   URL routing using `urls.py`
+-   Project URL vs App URL
+-   HTTP Response Types:
+    -   HttpResponse
+    -   JsonResponse
+    -   HttpResponseNotFound (404)
 
-### Views (app/views.py)
-- HttpResponse Example
-- JsonResponse Example
-- 404 Not Found Response
+------------------------------------------------------------------------
 
-### App URLs (app/urls.py)
+## 📊 HTTP Response Types Explained
+
+  Response Type                   Status Code   Use Case
+  ------------------------------- ------------- ----------------------
+  HttpResponse                    200           Normal HTML response
+  JsonResponse                    200           API / JSON response
+  HttpResponseRedirect            302           Temporary redirect
+  HttpResponsePermanentRedirect   301           Permanent redirect
+  HttpResponseNotFound            404           Page not found
+  HttpResponseForbidden           403           Access denied
+  HttpResponseBadRequest          400           Invalid request
+  HttpResponseServerError         500           Server error
+
+------------------------------------------------------------------------
+
+## 📁 Important Files
+
+    expense_tracker/
+    │
+    ├── expense_tracker/
+    │   └── urls.py
+    │
+    ├── app/
+    │   ├── views.py
+    │   └── urls.py
+
+------------------------------------------------------------------------
+
+## 🧠 Views Explanation (`app/views.py`)
+
+### HttpResponse Example
+
+``` python
+def httpresponse(request):
+    return HttpResponse('<h1>Hello All</h1>')
+```
+
+✔ Returns HTML content\
+✔ Status Code: 200
+
+------------------------------------------------------------------------
+
+### JsonResponse Example
+
+``` python
+def jsonresponse(request):
+    return JsonResponse({
+        "status": "Success",
+        "message": "hello all welcome to our course"
+    })
+```
+
+✔ Used for API responses\
+✔ Returns JSON data
+
+------------------------------------------------------------------------
+
+### 404 Not Found Example
+
+``` python
+def not_found_view(request):
+    return HttpResponseNotFound("Page not found")
+```
+
+✔ Manually returns a 404 response
+
+------------------------------------------------------------------------
+
+## 🔗 App URLs (`app/urls.py`)
+
+``` python
+urlpatterns = [
     path('httpresponse/', httpresponse, name='httpresponse'),
     path('jsonresponse/', jsonresponse, name='jsonresponse'),
-    path('', not_found_view, name='not_found_view')
+    path('', not_found_view, name='not_found_view'),
+]
+```
 
-### Project URLs (expense_tracker/urls.py)
-     path('', include('app.urls'))
+------------------------------------------------------------------------
 
-### How to Check
-  Run the server
-    
-    python manage.py runserver
+## 🌐 Project URLs (`expense_tracker/urls.py`)
 
-  Open in browser:
+``` python
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('app.urls')),
+]
+```
 
-    http://127.0.0.1:8000/httpresponse/
-    http://127.0.0.1:8000/jsonresponse/
-    http://127.0.0.1:8000/
+------------------------------------------------------------------------
 
+## ▶️ How to Run the Project
 
-### Day 2 Learning Objectives
+``` bash
+python manage.py runserver
+```
 
-By the end of Day 2, you should be able to:
-- Understand what a view is in Django
-- Understand what a URL is and how Django connects URLs to views
-- Use different HTTP response types
-- Return HTML and JSON responses
-- Handle a 404 – Page Not Found response
+### Test URLs in Browser
+
+-   http://127.0.0.1:8000/httpresponse/
+-   http://127.0.0.1:8000/jsonresponse/
+-   http://127.0.0.1:8000/
+
+------------------------------------------------------------------------
+
+## ✅ Day 2 Learning Outcomes
+
+By the end of this lesson, students will be able to: - Understand Django
+views - Connect URLs to views - Return HTML and JSON responses - Handle
+404 errors
+
+------------------------------------------------------------------------
+
+🚀 **Next Lesson:** Django Models & Database (Day 3)
