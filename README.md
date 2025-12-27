@@ -3,24 +3,21 @@
 This repository contains an Expense Tracker application built using Django.
 The project is developed in a day-wise branch structure to clearly track learning progress and feature implementation.
 
-### Day 1 – Django Project Setup
-- Concepts Covered
+### Day 2 – URLs, Views & Templates
+Concepts Covered
 
-- Creating a Django project
+- URL routing
 
-- Creating a Django application
+- Views and HTTP responses
 
-- Understanding the Django project structure
+- Connecting views with templates
 
-- Adding an app to INSTALLED_APPS
+- Basic HTML integration
 
-- Knowledge Gained
+### Knowledge Gained
 
-By the end of Day 1, learners gained a clear understanding of how Django projects are structured and how individual apps are integrated within a project.
+By the end of Day 2, learners gained a clear understanding of how Django handles HTTP requests and responses, and how web pages are rendered using views and templates.
 
-### About This Project
-
-The goal of this project is to build a fully functional expense tracker while learning Django step by step. Each branch represents progress made on a specific day, making it easier to follow the development journey.
 
 ### Live Project Output
 
