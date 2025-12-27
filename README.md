@@ -1,57 +1,37 @@
-# Expense Tracker
+### Expense Tracker Project
 
-A simple **Django-based web application** to help users track their personal expenses and incomes.
+This repository contains an Expense Tracker application built using Django.
+The project is developed in a day-wise branch structure to clearly track learning progress and feature implementation.
 
-This project uses Python and the Django web framework to create, view, and manage expense records. It allows you to record financial transactions and view summaries of your spending over time.
+### Day 1 – Django Project Setup
+- Concepts Covered
 
----
+- Creating a Django project
 
-## 🧠 Features
+- Creating a Django application
 
-✔️ Add and record expenses  
-✔️ Categorize transactions (e.g., Food, Transport, Bills)  
-✔️ View transaction history  
-✔️ See totals and summaries of expenses/income  
-✔️ Simple web interface for managing personal finances
+- Understanding the Django project structure
 
-*(You can extend it with charts, filters, authentication, reports, etc.)*
+- Adding an app to INSTALLED_APPS
 
----
+- Knowledge Gained
 
-## 🛠️ Tech Stack
+By the end of Day 1, learners gained a clear understanding of how Django projects are structured and how individual apps are integrated within a project.
 
-| Technology | Version |
-|------------|---------|
-| Python     | 3.x     |
-| Django     | 4.x     |
-| Database   | SQLite (default for Django) |
+### About This Project
 
----
+The goal of this project is to build a fully functional expense tracker while learning Django step by step. Each branch represents progress made on a specific day, making it easier to follow the development journey.
 
-## 🚀 Setup & Installation
+### Live Project Output
 
-### 1. Clone the repository
+- Live Demo: https://projectexpensetracker.pythonanywhere.com/
 
-git clone https://github.com/jaisurya-d/expense_tracker.git
-cd expense_tracker
+This link showcases the deployed version of the project with the latest completed features.
 
-### 2. Create & activate a virtual environment
+### Learn More
 
-# Linux / macOS
+Want to learn more or join our training programs?
 
-  python3 -m venv venv
-  source venv/bin/activate
+- Visit: https://edumavericks.onrender.com
 
-# Windows (PowerShell)
-
-  python -m venv venv
-  venv\Scripts\Activate
-
-### 3. Install dependencies
-
-pip install django
-
-### 🏁 Running the Application
-python manage.py migrate
-python manage.py runserver
-Now open in a web browser: http://127.0.0.1:8000
+- Contact us through the website for courses, mentorship, and professional guidance.
