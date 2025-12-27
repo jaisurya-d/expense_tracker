@@ -1,47 +1,34 @@
-# Day 3 -- Django Models & Admin Panel
+## Expense Tracker Project
 
-## Overview
+This repository contains an Expense Tracker application built using Django.
+The project is developed in a day-wise branch structure to clearly track learning progress and feature implementation.
 
-In this lesson, we learned how to: - Create a Django model - Understand
-different Django field types - Register a model in the Django admin
-panel - View and manage data using Django Admin
+## Day 3 – Django Models & Database
+## Concepts Covered
 
-## Files Explained
+- Django models and ORM
 
-### `models.py`
+- Creating database tables
 
-This file defines the database structure using Django models.
+- Database migrations (makemigrations, migrate)
 
-We created an **Expense** model with the following fields: - `category`
--- Expense category (Food, Travel, etc.) - `amount` -- Expense amount
-using DecimalField - `date` -- Date of the expense - `comment` -- Short
-description - `created_at` -- Automatically stores record creation time
+- Model fields
 
-The `__str__` method helps display readable data in the admin panel.
+## Knowledge Gained
 
-### `admin.py`
+- By the end of Day 3, learners understood how Django communicates with databases using models and how data is structured and managed efficiently.
 
-This file registers the Expense model so it can be managed via Django
-Admin.
 
-``` python
-admin.site.register(Expense)
-```
+### Live Project Output
 
-## Commands Used
+- Live Demo: https://projectexpensetracker.pythonanywhere.com/
 
-``` bash
-python manage.py makemigrations
-python manage.py migrate
-python manage.py createsuperuser
-python manage.py runserver
-```
+This link showcases the deployed version of the project with the latest completed features.
 
-## Result
+### Learn More
 
-You can now add, view, edit, and delete expenses from the Django Admin
-Panel.
+Want to learn more or join our training programs?
 
-------------------------------------------------------------------------
+- Visit: https://edumavericks.onrender.com
 
-Happy Learning 🚀
+- Contact us through the website for courses, mentorship, and professional guidance.
